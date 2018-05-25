@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    Hello world
+    <button id="mrA">
+        mrA
+    </button>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script>
+    var socket = io('http://localhost:3000/');
+    socket.on('Server-send-data', function (data) {
+        console.log(data);
+    });
+    $(document).ready(function () {
+        $("#mrA").click(function () {
+            socket.emit("Client-send-data", "HELLO");
+        });
+    });
+</script>
+</html>
