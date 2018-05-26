@@ -16,6 +16,14 @@ $(document).ready(function () {
     $("#btnSendMessage").click(function () {
         let message = $("#txtMessage").val().trim();
         socket.emit("user-send-message", message);
+        $("#txtMessage").val("");
+    });
+    
+    $("#txtMessage").focusin(function () {
+        socket.emit("typing");
+    });
+    $("#txtMessage").focusout(function () {
+        socket.emit("not-typing");
     });
 
     socket.on('server-send-dki-thatbai', function () {
@@ -40,6 +48,14 @@ $(document).ready(function () {
         $("#chatForm").hide();
     });
     socket.on('server-send-message', function (data) {
-        $("#listMessage").append('<div class="msg">' + data.username + ': ' + data.content + '</div>')
+        $("#listMessage").append('<div class="msg">' + data.username + ': ' + data.content + '</div>');
+    });
+
+    socket.on('server-send-typing', function (data) {
+        $("#typing").append('<p id="' + data + '">' + data + ' is typing</p>');
+    });
+    socket.on('server-send-not-typing', function (data) {
+        console.log(data);
+        $("#typing").find('#'+data).remove();
     });
 });

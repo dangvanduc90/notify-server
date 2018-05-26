@@ -30,6 +30,14 @@ io.on('connection', function (socket) {
         socket.broadcast.emit("server-send-danhsach-users", mangUser);
     });
 
+    socket.on('typing', function () {
+        socket.broadcast.emit("server-send-typing", socket.username);
+    });
+
+    socket.on('not-typing', function () {
+        socket.broadcast.emit("server-send-not-typing", socket.username);
+    });
+
     socket.on('client-send-username', function (data) {
         if (mangUser.indexOf(data) >= 0) { // duplicate username
             socket.emit('server-send-dki-thatbai');
@@ -39,7 +47,6 @@ io.on('connection', function (socket) {
             socket.emit('server-send-dki-thanhcong', data);
             io.sockets.emit("server-send-danhsach-users", mangUser);
         }
-        // io.sockets.emit('Server-send-data', 'can you hear me?');
     });
 
     socket.on('user-send-message', function (data) {
