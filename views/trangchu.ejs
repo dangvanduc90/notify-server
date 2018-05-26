@@ -3,24 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="main.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="main.js"></script>
+
 </head>
 <body>
-    Hello world
-    <button id="mrA">
-        mrA
-    </button>
+    <div id="wrapper">
+        <div id="alert"></div>
+        <div id="loginForm">
+            <h2>What your name</h2>
+            <input type="text" id="txtUsername">
+            <input type="button" id="btnRegister" value="Register">
+        </div>
+
+        <div id="chatForm">
+            <div id="left">
+                <div id="boxTitle">
+                    Users Online
+                </div>
+                <div id="boxContent">
+                </div>
+            </div>
+            <div id="right">
+                <div id="sayHi">
+                    Hello
+                    <span id="currentUser">
+                        Teo
+                    </span>
+                    <input type="button" id="btnLogout" value="Logout">
+                </div>
+                <div id="listMessage">
+
+                </div>
+                <input type="text" id="txtMessage">
+                <input type="button" id="btnSendMessage" value="Send Message">
+            </div>
+        </div>
+    </div>
+
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/bower_components/jquery/dist/jquery.js"></script>
-<script>
-    var socket = io('http://localhost:3000/');
-    socket.on('Server-send-data', function (data) {
-        console.log(data);
-    });
-    $(document).ready(function () {
-        $("#mrA").click(function () {
-            socket.emit("Client-send-data", "HELLO");
-        });
-    });
-</script>
 </html>

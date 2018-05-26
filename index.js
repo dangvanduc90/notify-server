@@ -11,6 +11,7 @@ server.listen(3000, function () {
     console.log("listen 3000");
 });
 
+var mangUser = [];
 io.on('connection', function (socket) {
     console.log("Client connected: " + socket.id);
 
@@ -18,9 +19,31 @@ io.on('connection', function (socket) {
         console.log("Client disconnected: " + socket.id);
     });
 
-    socket.on('Client-send-data', function (data) {
-        console.log(socket.id + " vua gui: " + data);
-        socket.emit('Server-send-data', 'can you hear me?');
+    socket.on('logout', function () {
+        if (mangUser.indexOf(socket.username) != -1) {
+            mangUser.splice(
+                mangUser.indexOf(socket.username), 1
+            );
+        }
+
+        socket.emit('logout');
+        socket.broadcast.emit("server-send-danhsach-users", mangUser);
+    });
+
+    socket.on('client-send-username', function (data) {
+        if (mangUser.indexOf(data) >= 0) { // duplicate username
+            socket.emit('server-send-dki-thatbai');
+        } else {
+            mangUser.push(data);
+            socket.username = data;
+            socket.emit('server-send-dki-thanhcong', data);
+            io.sockets.emit("server-send-danhsach-users", mangUser);
+        }
+        // io.sockets.emit('Server-send-data', 'can you hear me?');
+    });
+
+    socket.on('user-send-message', function (data) {
+        io.sockets.emit("server-send-message", {username: socket.username, content: data});
     });
 });
 
