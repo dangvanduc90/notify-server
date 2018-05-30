@@ -1,5 +1,5 @@
 ## How to use
-                   
+This project using socket.io and nodejs
 Demo notification with 2 project, this is server side, other is client side (https://github.com/dangvanduc90/notify-client)
 
 cd to project folder and run cmd <b>node index.js</b>
