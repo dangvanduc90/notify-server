@@ -17,6 +17,8 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         console.log("Client disconnected: " + socket.id);
+        // var clients = io.sockets.clients(nick.room);
+        // console.log(clients.length);
     });
 
     socket.on('logout', function () {
@@ -25,7 +27,6 @@ io.on('connection', function (socket) {
                 mangUser.indexOf(socket.username), 1
             );
         }
-
         socket.emit('logout');
         socket.broadcast.emit("server-send-danhsach-users", mangUser);
     });
@@ -51,6 +52,19 @@ io.on('connection', function (socket) {
 
     socket.on('user-send-message', function (data) {
         io.sockets.emit("server-send-message", {username: socket.username, content: data});
+    });
+
+    socket.on('join-room', function (id) {
+        socket.join(id, () => {
+            let rooms = Object.keys(socket.rooms);
+            console.log(rooms);
+        });
+        io.to(id).emit('welcome-room', 'hello new client to room ' + id);
+    });
+
+    socket.on('register-laravel', function (data) {
+        io.in('1').emit('big-announcement', 'the game will start soon');
+        io.in('2').emit('big-announcement', 'the game will start soon');
     });
 });
 

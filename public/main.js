@@ -1,5 +1,8 @@
 var socket = io('http://localhost:3000/');
 $(document).ready(function () {
+    let id = 1001;
+    socket.emit('join-room', id);
+
     $("#loginForm").show();
     $("#chatForm").hide();
 
@@ -57,5 +60,8 @@ $(document).ready(function () {
     socket.on('server-send-not-typing', function (data) {
         console.log(data);
         $("#typing").find('#'+data).remove();
+    });
+    socket.on('welcome-room', function (data) {
+        console.log(data);
     });
 });
